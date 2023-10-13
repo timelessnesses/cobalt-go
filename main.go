@@ -97,7 +97,7 @@ func main() {
 		Usage: "Edit or see current configuration.",
 		Flags: []cli.Flag{
 			&cli.StringFlag{
-				Name:  "Endpoint",
+				Name:  "endpoint",
 				Usage: "An endpoint (Included with schemas )",
 			},
 			&cli.StringFlag{
