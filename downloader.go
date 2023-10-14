@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/timelessnesses/cobalt-go/client"
-	"github.com/timelessnesses/cobalt-go/settings"
+	"github.com/timelessnesses/gobalt/client"
+	"github.com/timelessnesses/gobalt/settings"
 	"github.com/urfave/cli/v2"
 )
 

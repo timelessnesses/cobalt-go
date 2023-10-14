@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"os"
 
-	"github.com/timelessnesses/cobalt-go/client"
+	"github.com/timelessnesses/gobalt/client"
 	"github.com/urfave/cli/v2"
 	"github.com/valyala/fastjson"
 )

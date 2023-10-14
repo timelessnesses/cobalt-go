@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/timelessnesses/cobalt-go/settings"
+	"github.com/timelessnesses/gobalt/settings"
 	"github.com/urfave/cli/v2"
 )
 

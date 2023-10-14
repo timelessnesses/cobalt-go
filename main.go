@@ -4,8 +4,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/timelessnesses/cobalt-go/client"
-	cli_settings "github.com/timelessnesses/cobalt-go/settings/cli"
+	"github.com/timelessnesses/gobalt/client"
+	cli_settings "github.com/timelessnesses/gobalt/settings/cli"
 	"github.com/urfave/cli/v2"
 )
 
