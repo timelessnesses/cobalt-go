@@ -49,7 +49,8 @@ func GetSettings(path string) Settings {
 	}
 	file, err := os.ReadFile(path)
 	if err != nil {
-		panic(err)
+		Init()
+		return GetSettings("")
 	}
 	parsed, err := fastjson.ParseBytes(file)
 	if err != nil {
@@ -103,6 +104,21 @@ func Save(ctx *cli.Context) error {
 	if (config.DisableMetadata != ctx.Bool("disableMetadata") && !ctx.Bool("disableMetadata")) || (config.DisableMetadata != ctx.Bool("disableMetadata") && ctx.Bool("disableMetadata")) {
 		config.DisableMetadata = ctx.Bool("disableMetadata")
 	}
+	if (config.DubLang != ctx.Bool("dubLang") && !ctx.Bool("dubLang")) || (config.DubLang != ctx.Bool("dubLang") && ctx.Bool("dubLang")) {
+		config.DubLang = ctx.Bool("dubLang")
+	}
+	if (config.IsAudioMuted != ctx.Bool("isAudioMuted") && !ctx.Bool("isAudioMuted")) || (config.IsAudioMuted != ctx.Bool("isAudioMuted") && ctx.Bool("isAudioMuted")) {
+		config.IsAudioMuted = ctx.Bool("isAudioMuted")
+	}
+	if (config.IsAudioOnly != ctx.Bool("isAudioOnly") && !ctx.Bool("isAudioOnly")) || (config.IsAudioOnly != ctx.Bool("isAudioOnly") && ctx.Bool("isAudioOnly")) {
+		config.IsAudioOnly = ctx.Bool("isAudioOnly")
+	}
+	if (config.IsNoTTWatermark != ctx.Bool("isNoTTWatermark") && !ctx.Bool("isNoTTWatermark")) || (config.IsNoTTWatermark != ctx.Bool("isNoTTWatermark") && ctx.Bool("isNoTTWatermark")) {
+		config.IsNoTTWatermark = ctx.Bool("isNoTTWatermark")
+	}
+	if (config.IsTTFullAudio != ctx.Bool("isTTFullAudio") && !ctx.Bool("isTTFullAudio")) || (config.IsTTFullAudio != ctx.Bool("isNoTTWatermark") && ctx.Bool("isTTFullAudio")) {
+		config.IsTTFullAudio = ctx.Bool("isTTFullAudio")
+	}
 
-	return nil
+	return WriteSettings(config, ctx.String("configPath"))
 }

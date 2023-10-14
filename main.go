@@ -1,13 +1,11 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
 	"os"
 	"strings"
 
 	"github.com/timelessnesses/cobalt-go/client"
-	"github.com/timelessnesses/cobalt-go/settings"
+	cli_settings "github.com/timelessnesses/cobalt-go/settings/cli"
 	"github.com/urfave/cli/v2"
 )
 
@@ -89,7 +87,13 @@ func main() {
 				Usage: "Specify forcing no metadatas or not. (Default: False)",
 				Value: false,
 			},
+			&cli.PathFlag{
+				Name:  "out",
+				Usage: "Specify path to output. (Default to current location)",
+				Value: "./",
+			},
 		},
+		Action: DownloaderDo,
 	}
 
 	setting := cli.Command{
@@ -164,20 +168,7 @@ func main() {
 				Value: "./config.json",
 			},
 		},
-		Action: func(ctx *cli.Context) error {
-			if ctx.NumFlags() == 0 || ctx.NumFlags() == 1 {
-				jsonized, err := json.Marshal(settings.GetSettings(ctx.String("configPath")))
-				if err != nil {
-					return err
-				}
-				fmt.Println("Configuration (in JSON)")
-				fmt.Println(jsonized)
-			}
-			if ctx.NumFlags() >= 2 {
-				settings.Save(ctx)
-			}
-			return nil
-		},
+		Action: cli_settings.Save,
 	}
 
 	app := cli.App{

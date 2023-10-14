@@ -139,7 +139,7 @@ func (self *Client) Download(result GetInfoResult, path string) error {
 		return err
 	}
 
-	f, err := os.OpenFile(name, os.O_CREATE|os.O_WRONLY, fs.ModeDevice)
+	f, err := os.OpenFile(path+name, os.O_CREATE|os.O_WRONLY, fs.ModeDevice)
 	defer f.Close()
 
 	bar := progressbar.DefaultBytes(
