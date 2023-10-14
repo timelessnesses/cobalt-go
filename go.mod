@@ -1,4 +1,4 @@
-module github.com/timelessnesses/cobalt-go
+module github.com/timelessnesses/gobalt
 
 go 1.21.3
 
