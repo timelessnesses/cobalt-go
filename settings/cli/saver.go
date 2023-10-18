@@ -9,7 +9,7 @@ import (
 )
 
 func Save(ctx *cli.Context) error {
-	if ctx.NumFlags() == 0 || ctx.NumFlags() == 1 {
+	if ctx.NumFlags() == 0 {
 		jsonized, err := json.Marshal(settings.GetSettings(ctx.String("configPath")))
 		if err != nil {
 			return err
@@ -17,8 +17,10 @@ func Save(ctx *cli.Context) error {
 		fmt.Println("Configuration (in JSON)")
 		fmt.Println(string(jsonized))
 	}
-	if ctx.NumFlags() >= 2 {
+	if ctx.NumFlags() >= 1 {
 		settings.Save(ctx)
+		fmt.Println("Done!")
+		settings.ValidateSettings(settings.GetSettings(ctx.String("configPath")))
 	}
 	return nil
 }

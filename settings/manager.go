@@ -22,8 +22,16 @@ type Settings struct {
 	Endpoint        string
 }
 
+func GetCurrentFolderPath() string {
+	dir, e := os.Getwd()
+	if e != nil {
+		panic(e)
+	}
+	return dir
+}
+
 func Init() error {
-	file, err := os.OpenFile("config.json", os.O_CREATE|os.O_WRONLY, os.ModeDevice)
+	file, err := os.OpenFile(GetCurrentFolderPath()+"/config.json", os.O_CREATE|os.O_RDWR, os.ModeDevice)
 	if err != nil {
 		panic(err)
 	}
@@ -43,9 +51,21 @@ func Init() error {
 	return nil
 }
 
+func ValidateSettings(s Settings) {
+	if _, err := client.NewAudioFormat(s.AFormat); err != nil {
+		panic("Validation Error: Audio Format is not supported.")
+	}
+	if _, err := client.NewVideoCodec(s.VCodec); err != nil {
+		panic("Validation Error: Video Codec is not supported.")
+	}
+	if _, err := client.NewVideoQuality(s.VQuality); err != nil {
+		panic("Validation Error: Video Quality is not supported.")
+	}
+}
+
 func GetSettings(path string) Settings {
 	if path == "" {
-		path = "./config.json"
+		path = GetCurrentFolderPath() + "/config.json"
 	}
 	file, err := os.ReadFile(path)
 	if err != nil {
@@ -56,7 +76,7 @@ func GetSettings(path string) Settings {
 	if err != nil {
 		panic(err)
 	}
-	return Settings{
+	r := Settings{
 		VCodec:          string(parsed.GetStringBytes("VCodec")),
 		VQuality:        string(parsed.GetStringBytes("VQuality")),
 		AFormat:         string(parsed.GetStringBytes("AFormat")),
@@ -68,14 +88,16 @@ func GetSettings(path string) Settings {
 		DisableMetadata: parsed.GetBool("DisableMetadata"),
 		Endpoint:        string(parsed.GetStringBytes("Endpoint")),
 	}
+	ValidateSettings(r)
+	return r
 }
 
 func WriteSettings(settings Settings, path string) error {
 	if path == "" {
-		path = "./config.json"
+		path = GetCurrentFolderPath() + "/config.json"
 	}
-	jsonized, _ := json.Marshal(settings)
-	err := os.WriteFile(path, jsonized, os.ModeDevice)
+	jsonized, _ := json.MarshalIndent(settings, "", "    ")
+	err := os.WriteFile(path, jsonized, 0644)
 	if err != nil {
 		panic(err)
 	}
@@ -83,7 +105,7 @@ func WriteSettings(settings Settings, path string) error {
 }
 
 func IsSettingsExists(path string) bool {
-	_, e := os.OpenFile(path, os.O_RDONLY, os.ModeDevice)
+	_, e := os.ReadFile(path)
 	return e == nil
 }
 
@@ -96,10 +118,10 @@ func Save(ctx *cli.Context) error {
 		config.Endpoint = ctx.String("endpoint")
 	}
 	if config.VCodec != ctx.String("vCodec") && ctx.String("vCodec") != "" {
-		config.AFormat = ctx.String("vCodec")
+		config.VCodec = ctx.String("vCodec")
 	}
 	if config.VQuality != ctx.String("vQuality") && ctx.String("vQuality") != "" {
-		config.AFormat = ctx.String("vQuality")
+		config.VQuality = ctx.String("vQuality")
 	}
 	if (config.DisableMetadata != ctx.Bool("disableMetadata") && !ctx.Bool("disableMetadata")) || (config.DisableMetadata != ctx.Bool("disableMetadata") && ctx.Bool("disableMetadata")) {
 		config.DisableMetadata = ctx.Bool("disableMetadata")

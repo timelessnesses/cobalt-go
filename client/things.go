@@ -2,7 +2,6 @@ package client
 
 import (
 	"errors"
-	"log"
 )
 
 type Status struct {
@@ -21,7 +20,6 @@ type VideoCodec struct {
 }
 
 func NewVideoCodec(codec string) (VideoCodec, error) {
-	log.Print(codec == VideoCodecH264)
 	if codec != VideoCodecAV1 && codec != VideoCodecH264 && codec != VideoCodecVP9 { // ?? what the fuck??
 		return VideoCodec{}, errors.New("The Video Codec Is Not Supported.")
 	}

@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/timelessnesses/gobalt/client"
+	"github.com/timelessnesses/gobalt/settings"
 	cli_settings "github.com/timelessnesses/gobalt/settings/cli"
 	"github.com/urfave/cli/v2"
 )
@@ -92,6 +93,11 @@ func main() {
 				Usage: "Specify path to output. (Default to current location)",
 				Value: "./",
 			},
+			&cli.StringFlag{
+				Name:  "configPath",
+				Usage: "Specify config.json path for this program to use.",
+				Value: settings.GetCurrentFolderPath() + "/config.json",
+			},
 		},
 		Action: DownloaderDo,
 	}
@@ -162,17 +168,12 @@ func main() {
 				Name:  "disableMetadata",
 				Usage: "Specify forcing no metadatas or not.",
 			},
-			&cli.StringFlag{
-				Name:  "configPath",
-				Usage: "Specify config.json path for this program to use.",
-				Value: "./config.json",
-			},
 		},
 		Action: cli_settings.Save,
 	}
 
 	app := cli.App{
-		Name:  "cobalt-go",
+		Name:  "gobalt",
 		Usage: "A CLI tool for interacting with cobalt's API. Written in Golang.",
 		Commands: []*cli.Command{
 			&download,

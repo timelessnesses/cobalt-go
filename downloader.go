@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/timelessnesses/gobalt/client"
@@ -10,7 +9,6 @@ import (
 )
 
 func convert_settings_to_actual_client_setting(c settings.Settings) client.Setting {
-	fmt.Println(c.AFormat)
 	vCodec, err := client.NewVideoCodec(c.VCodec)
 	vQuality, err2 := client.NewVideoQuality(c.VQuality)
 	aFormat, err3 := client.NewAudioFormat(strings.ToLower(c.AFormat))
@@ -79,7 +77,6 @@ func DownloaderDo(ctx *cli.Context) error {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("Downloading...")
 	c.Download(result, ctx.Path("out"))
 	return nil
 }
