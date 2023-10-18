@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"strings"
 
@@ -9,6 +10,8 @@ import (
 	cli_settings "github.com/timelessnesses/gobalt/settings/cli"
 	"github.com/urfave/cli/v2"
 )
+
+var commit string
 
 func main() {
 
@@ -174,7 +177,7 @@ func main() {
 
 	app := cli.App{
 		Name:  "gobalt",
-		Usage: "A CLI tool for interacting with cobalt's API. Written in Golang.",
+		Usage: fmt.Sprintf("A Cobalt API (https://github.com/wukko/cobalt) wrapped in CLI style. Written in Golang. (Commit Hash: %s)", commit),
 		Commands: []*cli.Command{
 			&download,
 			&setting,
